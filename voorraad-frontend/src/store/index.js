@@ -4,17 +4,28 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://127.0.0.1:8000';
+axios.defaults.baseURL = 'http://localhost:8000';
 
 export default new Vuex.Store({
   state: {
-	  
+	  authenticated: false,
+	  username: null
   },
   getters: {
-
+	  isAuth(state) {
+		  return state.authenticated;
+	  }
   },
   mutations: {
-
+	  loginUser(state) {
+		  state.authenticated = true;
+	  },
+	  logoutUser(state) {
+		  state.authenticated = false;
+	  },
+	  setUsername(state, payload) {
+		  state.username = payload;
+	  }
   },
   actions: {
 	loginUser(context, payload){
@@ -23,13 +34,24 @@ export default new Vuex.Store({
 			.then(() => {
 				axios.post('/login', {name: payload.name, password: payload.password})
 				.then(response => {
-					resolve(response);
+					context.commit('loginUser');
+					context.commit('setUsername', response.data.name);
+					resolve(response.data);
 				})
-				.catch(error => {reject(error)})
+				.catch(error => { reject(error) })
 			})
-		  .catch(error => {
-			reject(error);
-		  })
+		  .catch(error => {	reject(error) })
+		})
+	},
+	logoutUser(context){
+		return new Promise((resolve, reject) => {
+			axios.post('/logout')
+			.then((response) => {
+				context.commit('logoutUser');
+				context.commit('setUsername', null);
+				resolve(response.data);
+			})
+		  .catch(error => {	reject(error) })
 		})
 	},
   }

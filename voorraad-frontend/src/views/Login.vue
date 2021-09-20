@@ -44,14 +44,16 @@ export default {
 	methods: {
 		submitLogin() {
 			this.$store.dispatch('loginUser', {name: this.username, password: this.password})
-			.then(response => console.log(response))
+			.then((response) => {
+				this.$router.push('/');
+			})
 			.catch(error => console.log(error));
 		}
 	}
 }
 </script>
 
-<style>
+<style scoped>
 .form-div {
 	max-width: 500px;
   	margin: 0 auto;

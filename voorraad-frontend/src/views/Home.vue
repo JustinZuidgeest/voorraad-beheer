@@ -12,7 +12,11 @@ import Login from './Login.vue'
 
     components: {
         Login
-      
     },
+	mounted()  {
+		if(!this.$store.getters.isAuth){
+			this.$router.push('/login');
+		}
+	}
   }
 </script>
