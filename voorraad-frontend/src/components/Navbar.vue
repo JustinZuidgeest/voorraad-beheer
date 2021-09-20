@@ -2,9 +2,10 @@
   <div>
     <v-app-bar app color="primary" dark>
 		<router-link to="/" class="white--text">Voorraadbeheer</router-link>
+		<span></span>
 		<div class="welcome" v-if="authenticated">Welcome, {{ username }}</div>
-		<v-btn v-if="!authenticated" right fixed class="blue white--text" @click="clickLogin">Login</v-btn>
-		<v-btn v-if="authenticated" right fixed class="blue white--text" @click="clickLogout">Logout</v-btn>
+		<v-btn v-if="!authenticated" class="blue white--text" @click="clickLogin">Login</v-btn>
+		<v-btn v-if="authenticated" class="blue white--text" @click="clickLogout">Logout</v-btn>
     </v-app-bar>
   </div>
 </template>
@@ -38,7 +39,11 @@
 </script>
 <style scoped>
 .welcome {
-	position: fixed;
-	right: 130px;
+	margin-right: 16px;
 }
+
+span{
+	flex: 1;
+}
+
 </style>
