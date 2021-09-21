@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-app-bar app color="primary" dark>
-		<router-link to="/" class="white--text">Voorraadbeheer</router-link>
+		<v-app-bar-title>Voorraadbeheer</v-app-bar-title>
+		<router-link to='/' class="white--text mx-6" style="text-decoration: none;"><v-icon>mdi-view-dashboard</v-icon>Products</router-link>
+		<router-link to='/users' class="white--text mx-6" style="text-decoration: none;"><v-icon>mdi-account-circle</v-icon>Users</router-link>
 		<span></span>
 		<div class="welcome" v-if="authenticated">Welcome, {{ username }}</div>
 		<v-btn v-if="!authenticated" class="blue white--text" @click="clickLogin">Login</v-btn>
@@ -25,6 +27,7 @@
 		},
 		clickLogout() {
 			this.$store.dispatch('logoutUser');
+			this.$router.push('login');
 		}
 	},
 	computed: {

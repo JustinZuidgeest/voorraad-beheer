@@ -2,28 +2,26 @@
 	<div>
 		<h1>Products</h1>
 		<v-simple-table>
-			<template v-slot:default>
-				<thead>
-					<tr>
-						<th class="text-left">
-							Name
-						</th>
-						<th class="text-left">
-							Price
-						</th>
-						<th class="text-left">
-							Stock
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr	v-for="product in products" :key="product.name">
-						<td>{{ product.name }}</td>
-						<td>&#36;{{ product.price }}</td>
-						<td>{{ product.stock }}</td>
-					</tr>
-				</tbody>
-			</template>
+			<thead>
+				<tr>
+					<th class="text-left">
+						Name
+					</th>
+					<th class="text-left">
+						Price
+					</th>
+					<th class="text-left">
+						Stock
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr	v-for="product in products" :key="product.name">
+					<td>{{ product.name }}</td>
+					<td>&#36;{{ product.price }}</td>
+					<td>{{ product.stock }}</td>
+				</tr>
+			</tbody>
 		</v-simple-table>
 	</div>
 </template>
@@ -45,7 +43,6 @@
 			this.$store.dispatch('fetchProducts')
 			.then((response) => {
 				this.products = response;
-				console.log(this.products);
 			}).catch((error) => console.error(error));
 		}
 	},
@@ -53,7 +50,9 @@
 		if(!this.authenticated){
 			this.$router.push('/login');
 		}
-		this.fetchProducts();
+		else{
+			this.fetchProducts();
+		}
 	},
 	computed: {
 		authenticated () {

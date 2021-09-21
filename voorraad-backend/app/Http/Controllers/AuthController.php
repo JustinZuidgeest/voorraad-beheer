@@ -18,7 +18,7 @@ class AuthController extends Controller
             return Auth::user();
         }
 
-		return response()->json(['error' => 'Unknown username / password'], 401);
+		return response('Unknown username / password', 401);
 	}
 
 	public function logout(Request $request)
@@ -29,6 +29,6 @@ class AuthController extends Controller
 
 		$request->session()->regenerateToken();
 
-		return response('Logout succesful', 200)->header('Content-Type', 'text/plain');
+		return response('Logout succesful', 200);
 	}
 }

@@ -3,23 +3,29 @@
 		<div class="form-div">
 			<h1>Login</h1>
 			<v-form v-model="valid">
+
 				<v-text-field
 					v-model="username"
 					:rules="usernameRules"
 					label="Username"
 					required
 				></v-text-field>
+
 				<v-text-field
 					v-model="password"
 					:append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
 					:rules="passwordRules"
 					:type="showPass ? 'text' : 'password'"
 					label="Password"
-					hint="At least 6 characters"
-					counter
 					@click:append="showPass = !showPass"
 				></v-text-field>
+
+				<v-alert dense outlined v-if="errorMsg" type="error">
+					{{ errorMsg }}
+				</v-alert>
+
 				<v-btn @click="submitLogin" class="blue white--text">Login</v-btn>
+
 			</v-form>
 		</div>
 	</div>
@@ -38,15 +44,19 @@ export default {
 		showPass: false,
 		passwordRules: [
 			v => v != null || 'Password is required',
-			v => v.length >= 6 || 'Password must be at least 6 characters'
-		]
+		],
+		errorMsg: ''
 	}),
 	methods: {
 		submitLogin() {
 			this.$store.dispatch('loginUser', {name: this.username, password: this.password})
-			.then((response) => {
+			.then(() => {
 				this.$router.push('/');
-			}).catch(error => console.error(error));
+			}).catch((error) => {
+				console.error(error);
+				this.errorMsg = error.data;
+				setTimeout(() => this.errorMsg = '', 5000)
+			});
 		}
 	}
 }
