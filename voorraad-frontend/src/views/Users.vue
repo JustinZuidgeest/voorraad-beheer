@@ -75,15 +75,20 @@ export default {
 		},
 		deleteUser(id){
 			this.$store.dispatch('deleteUser', {id: id})
-			.then((response) => {
-				this.snackbar = true;
-				this.snackbarText = 'User deleted';
-				setTimeout(() => {
-					this.snackbar = false;
-					this.snackbarText = '';
-				}, 5000);
+			.then(() => {
+				this.flashSnackbar('User deleted');
 				this.fetchUsers();
-			}).catch((error) => console.error(error));
+			}).catch((error) => {
+				this.flashSnackbar(error.data);
+			});
+		},
+		flashSnackbar(text){
+			this.snackbar = true;
+			this.snackbarText = text;
+			setTimeout(() => {
+				this.snackbar = false;
+				this.snackbarText = '';
+			}, 5000);
 		}
 	},
 	mounted()  {

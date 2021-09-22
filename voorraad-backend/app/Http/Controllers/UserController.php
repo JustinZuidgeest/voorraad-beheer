@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -59,6 +60,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+			if (Auth::user()->id == $user->id){
+				return response('Cannot delete own account', 403);
+			}
+
 			$user->delete();
 			return response('User deleted', 200);
     }
