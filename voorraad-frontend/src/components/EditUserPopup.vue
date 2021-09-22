@@ -35,6 +35,15 @@
 						required
 					></v-text-field>
 				</v-form>
+				<v-alert dense outlined v-if="errorMsg" type="error">
+					<ul>
+						<div v-for="array in errorMsg" v-bind:key="array[0]">
+							<li v-for="error in array" v-bind:key="error">
+								{{ error }}
+							</li>
+						</div>
+					</ul>
+				</v-alert>
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer></v-spacer>
@@ -54,6 +63,7 @@ export default {
 		return{
 			dialog: false,
 			valid: false,
+			errorMsg: null,
 			name: this.user.name,
 			nameRules: [
 				v => !!v || 'Username is required',
@@ -76,16 +86,20 @@ export default {
 	},
 	methods: {
 		updateUser() {
-			this.$store.dispatch('updateUser', {
+			if (this.$refs.form.validate()){
+				this.$store.dispatch('updateUser', {
 				id: this.user.id,
 				name: this.name,
 				email: this.email,
 				password: this.password
-			})
-			.then(() => {
-				this.dialog = false;
-				this.$emit('userUpdated');
-			}).catch((error) => console.error(error));
+				})
+				.then(() => {
+					this.dialog = false;
+					this.$emit('userUpdated');
+				}).catch((error) => {
+					this.errorMsg = Object.values(error.data.errors);
+				});
+			}
 		},
 	}
 }

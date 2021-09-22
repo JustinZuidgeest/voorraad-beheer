@@ -30,12 +30,20 @@
 						<edit-user-popup v-bind:user="user" v-on:userUpdated="fetchUsers()"></edit-user-popup>
 					</td>
 					<td>
-						<v-icon @click="deleteClicked(user.id)">mdi-delete</v-icon>
+						<v-icon @click="deleteUser(user.id)">mdi-delete</v-icon>
 					</td>
 				</tr>
 			</tbody>
 		</v-simple-table>
 		<add-user-popup v-on:userCreated="fetchUsers()"></add-user-popup>
+		<v-snackbar v-model="snackbar">
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
 	</div>
 </template>
 
@@ -55,6 +63,8 @@ export default {
 			email: 'placeholder@email.com',
 			created_at: '00/00/0000'
 		}],
+		snackbar: false,
+		snackbarText: ''
 	}),
 	methods: {
 		fetchUsers() {
@@ -63,8 +73,17 @@ export default {
 				this.users = response;
 			}).catch((error) => console.error(error));
 		},
-		deleteClicked(id){
-			console.log('delete', id);
+		deleteUser(id){
+			this.$store.dispatch('deleteUser', {id: id})
+			.then((response) => {
+				this.snackbar = true;
+				this.snackbarText = 'User deleted';
+				setTimeout(() => {
+					this.snackbar = false;
+					this.snackbarText = '';
+				}, 5000);
+				this.fetchUsers();
+			}).catch((error) => console.error(error));
 		}
 	},
 	mounted()  {

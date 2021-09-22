@@ -102,6 +102,15 @@ export default new Vuex.Store({
 				})
 				.catch(error => {	reject(error.response) })
 			})
+		},
+		deleteUser(context, payload){
+			return new Promise((resolve, reject) => {
+				axios.delete('/api/users/delete/' + payload.id)
+				.then((response) => {
+					resolve(response.data);
+				})
+				.catch(error => {	reject(error.response) })
+			})
 		}
   }
 })
