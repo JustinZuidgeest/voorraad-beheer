@@ -22,9 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function() {
 	Route::get('products', [ProductController::class, 'index']);
+	Route::patch('products/{product}', [ProductController::class, 'update']);
+	Route::delete('products/{product}', [ProductController::class, 'destroy']);
 
 	Route::get('users', [UserController::class, 'index']);
-	Route::post('users/store', [UserController::class, 'store']);
-	Route::patch('users/update/{user}', [UserController::class, 'update']);
-	Route::delete('users/delete/{user}', [UserController::class, 'destroy']);
+	Route::post('users', [UserController::class, 'store']);
+	Route::patch('users/{user}', [UserController::class, 'update']);
+	Route::delete('users/{user}', [UserController::class, 'destroy']);
 });

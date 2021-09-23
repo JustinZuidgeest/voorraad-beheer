@@ -53,7 +53,6 @@ export default {
 			.then(() => {
 				this.$router.push('/');
 			}).catch((error) => {
-				console.error(error);
 				this.errorMsg = error.data;
 				setTimeout(() => this.errorMsg = '', 5000)
 			});

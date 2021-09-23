@@ -46,7 +46,7 @@
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer></v-spacer>
-				<v-btn color="blue"	text @click="dialog = false">Close</v-btn>
+				<v-btn color="blue"	text @click="closePopup">Close</v-btn>
 				<v-btn color="blue" text @click="clickSave">Save</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -85,8 +85,7 @@ export default {
 			if (this.$refs.form.validate()){
 				this.$store.dispatch('storeUser', {name: this.name, email: this.email, password: this.password})
 				.then(() => {
-					this.dialog = false;
-					[this.name, this.email, this.password] = ['', '', ''];
+					this.closePopup();
 					this.errorMsg = null;
 					this.$refs.form.resetValidation()
 					this.$emit('userCreated');
@@ -96,6 +95,10 @@ export default {
 				});
 			}
 		},
+		closePopup(){
+			this.dialog = false;
+			[this.name, this.email, this.password] = ['','',''];
+		}
 	}
 }
 </script>

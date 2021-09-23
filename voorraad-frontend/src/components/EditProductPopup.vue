@@ -7,7 +7,7 @@
 
 		<v-card>
 			<v-card-title>
-				<h2>Edit {{ this.user.name }}</h2>
+				<h2>Edit {{ this.product.name }}</h2>
 			</v-card-title>
 			<v-card-text>
 				<v-form v-model="valid" ref="form">
@@ -18,20 +18,17 @@
 						required
 					></v-text-field>
 					<v-text-field
-						v-model="email"
-						:rules="emailRules"
-						label="Email"
-						type="email"
+						v-model="price"
+						:rules="priceRules"
+						label="Price"
+						type="number"
 						required
 					></v-text-field>
 					<v-text-field
-						v-model="password"
-						:rules="passwordRules"
-						label="Password"
-						:append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-						:type="showPass ? 'text' : 'password'"
-						@click:append="showPass = !showPass"
-						counter
+						v-model="stock"
+						:rules="stockRules"
+						label="Stock"
+						type="number"
 						required
 					></v-text-field>
 				</v-form>
@@ -47,8 +44,8 @@
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer></v-spacer>
-				<v-btn color="blue"	text @click="dialog = false">Close</v-btn>
-				<v-btn color="blue" text @click="updateUser">Save</v-btn>
+				<v-btn color="blue"	text @click="closePopup">Close</v-btn>
+				<v-btn color="blue" text @click="updateProduct">Save</v-btn>
 			</v-card-actions>
 		</v-card>
 
@@ -57,45 +54,41 @@
 
 <script>
 export default {
-	name: 'EditUser',
-	props: ['user'],
+	name: 'EditProduct',
+	props: ['product'],
 	data: function(){
 		return{
 			dialog: false,
 			valid: false,
 			errorMsg: null,
-			name: this.user.name,
+			name: this.product.name,
 			nameRules: [
-				v => !!v || 'Username is required',
+				v => !!v || 'Name is required',
 			],
-			email: this.user.email,
-			emailRules: [
-				v => !!v || 'Email is required',
-				v => {
-					const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-					return pattern.test(v) || 'Invalid e-mail.'
-				}
+			price: this.product.price,
+			priceRules: [
+				v => v >= 0  || "Price should be above 0",
+    		v => v <= 999.99 || "Price should be lower than 999.99",
 			],
-			password: '',
-			showPass: false,
-			passwordRules: [
-				v => !!v || 'Password is required',
-				v => v.length >= 6 || 'Password must be at least 6 characters'
-			],
+			stock: this.product.stock,
+			stockRules: [
+				v => v >= 0  || "Stock should be above 0",
+				v => v <= 999999999 || "Stock should be lower than 999999999"
+			]
 		}
 	},
 	methods: {
-		updateUser() {
+		updateProduct() {
 			if (this.$refs.form.validate()){
-				this.$store.dispatch('updateUser', {
-				id: this.user.id,
+				this.$store.dispatch('updateProduct', {
+				id: this.product.id,
 				name: this.name,
-				email: this.email,
-				password: this.password
+				price: parseFloat(this.price),
+				stock: parseInt(this.stock)
 				})
 				.then(() => {
+					this.$emit('productUpdated');
 					this.closePopup();
-					this.$emit('userUpdated');
 				}).catch((error) => {
 					this.errorMsg = Object.values(error.data.errors);
 				});
@@ -103,7 +96,7 @@ export default {
 		},
 		closePopup(){
 			this.dialog = false;
-			[this.name, this.email, this.password] = [this.user.name, this.user.email, ''];
+			[this.name, this.price, this.stock] = [this.product.name, this.product.price ,this.product.stock];
 		}
 	}
 }

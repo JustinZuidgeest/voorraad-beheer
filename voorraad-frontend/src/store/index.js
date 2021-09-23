@@ -66,6 +66,28 @@ export default new Vuex.Store({
 				.catch(error => {	reject(error.response) })
 			})
 		},
+		updateProduct(context, payload){
+			return new Promise((resolve, reject) => {
+				axios.patch('/api/products/' + payload.id, {
+					name: payload.name,
+					price: payload.price,
+					stock: payload.stock
+				})
+				.then((response) => {
+					resolve(response.data);
+				})
+				.catch(error => {	reject(error.response) })
+			})
+		},
+		deleteProduct(context, payload){
+			return new Promise((resolve, reject) => {
+				axios.delete('/api/products/' + payload.id)
+				.then((response) => {
+					resolve(response.data);
+				})
+				.catch(error => {	reject(error.response) })
+			})
+		},
 
 		// User related methods
 		fetchUsers(){
@@ -79,7 +101,7 @@ export default new Vuex.Store({
 		},
 		storeUser(context, payload){
 			return new Promise((resolve, reject) => {
-				axios.post('/api/users/store', {
+				axios.post('/api/users', {
 					name: payload.name,
 					email: payload.email,
 					password: payload.password
@@ -92,7 +114,7 @@ export default new Vuex.Store({
 		},
 		updateUser(context, payload){
 			return new Promise((resolve, reject) => {
-				axios.patch('/api/users/update/' + payload.id, {
+				axios.patch('/api/users/' + payload.id, {
 					name: payload.name,
 					email: payload.email,
 					password: payload.password
@@ -105,7 +127,7 @@ export default new Vuex.Store({
 		},
 		deleteUser(context, payload){
 			return new Promise((resolve, reject) => {
-				axios.delete('/api/users/delete/' + payload.id)
+				axios.delete('/api/users' + payload.id)
 				.then((response) => {
 					resolve(response.data);
 				})

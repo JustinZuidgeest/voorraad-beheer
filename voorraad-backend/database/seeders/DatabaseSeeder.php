@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create(['name' => 'John', 'password' => bcrypt('password')]);
+			User::factory()->create(['name' => 'John', 'password' => bcrypt('password')]);
 
-		Product::factory(100)->create();
+			Product::factory(100)->create();
     }
 }

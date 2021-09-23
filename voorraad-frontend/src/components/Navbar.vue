@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app color="primary" dark>
-		<v-app-bar-title>Voorraadbeheer</v-app-bar-title>
+		<h3>Voorraadbeheer</h3>
 		<router-link to='/' class="white--text mx-6" style="text-decoration: none;"><v-icon>mdi-view-dashboard</v-icon>Products</router-link>
 		<router-link to='/users' class="white--text mx-6" style="text-decoration: none;"><v-icon>mdi-account-circle</v-icon>Users</router-link>
 		<span></span>
