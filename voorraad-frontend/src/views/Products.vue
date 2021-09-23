@@ -35,6 +35,7 @@
 				</tr>
 			</tbody>
 		</v-simple-table>
+		<add-product-popup v-on:productCreated="fetchProducts()"></add-product-popup>
 		<v-snackbar v-model="snackbar">
       {{ snackbarText }}
       <template v-slot:action="{ attrs }">
@@ -47,10 +48,10 @@
 </template>
 
 <script>
-import EditProductPopup from '../components/EditProductPopup.vue';
+import AddProductPopup from '../components/AddProductPopup.vue';
 
   export default {
-  components: { EditProductPopup },
+  components: { AddProductPopup },
     name: 'Products',
 
 	data: () => ({

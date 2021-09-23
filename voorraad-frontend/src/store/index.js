@@ -66,6 +66,19 @@ export default new Vuex.Store({
 				.catch(error => {	reject(error.response) })
 			})
 		},
+		storeProduct(context, payload){
+			return new Promise((resolve, reject) => {
+				axios.post('/api/products', {
+					name: payload.name,
+					price: payload.price,
+					stock: payload.stock
+				})
+				.then((response) => {
+					resolve(response.data);
+				})
+				.catch(error => {	reject(error.response) })
+			})
+		},
 		updateProduct(context, payload){
 			return new Promise((resolve, reject) => {
 				axios.patch('/api/products/' + payload.id, {

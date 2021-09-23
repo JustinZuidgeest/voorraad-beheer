@@ -28,12 +28,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-		$attributes = $request->only('name', 'email', 'password');
-		$attributes['password'] = bcrypt($attributes['password']);
+			$attributes = $request->only('name', 'email', 'password');
+			$attributes['password'] = bcrypt($attributes['password']);
 
-		$user = User::create($attributes);
+			$user = User::create($attributes);
 
-		return $user;
+			return $user;
     }
 
     /**

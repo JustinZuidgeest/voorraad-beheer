@@ -2,12 +2,12 @@
 	<v-dialog max-width="600px" v-model="dialog">
 
 		<template v-slot:activator="{ on, attrs }">
-			<v-icon v-bind="attrs" v-on="on">mdi-pencil</v-icon>
+			<v-btn color="blue white--text" v-bind="attrs" v-on="on">Add Product</v-btn>
 		</template>
 
 		<v-card>
 			<v-card-title>
-				<h2>Edit {{ this.product.name }}</h2>
+				<h2>Add new Product</h2>
 			</v-card-title>
 			<v-card-text>
 				<v-form v-model="valid" ref="form">
@@ -45,7 +45,7 @@
 			<v-card-actions>
 				<v-spacer></v-spacer>
 				<v-btn color="blue"	text @click="closePopup">Close</v-btn>
-				<v-btn color="blue" text @click="updateProduct">Save</v-btn>
+				<v-btn color="blue" text @click="clickSave">Save</v-btn>
 			</v-card-actions>
 		</v-card>
 
@@ -54,24 +54,23 @@
 
 <script>
 export default {
-	name: 'EditProduct',
-	props: ['product'],
+	name: 'AddProduct',
 	data: function(){
 		return{
 			dialog: false,
 			valid: false,
 			errorMsg: null,
-			name: this.product.name,
+			name: '',
 			nameRules: [
 				v => !!v || 'Name is required',
 			],
-			price: this.product.price,
+			price: '',
 			priceRules: [
 				v => !!v || 'Price is required',
 				v => v >= 0  || "Price should be above 0",
     		v => v <= 999.99 || "Price should be lower than 999.99",
 			],
-			stock: this.product.stock,
+			stock: '',
 			stockRules: [
 				v => !!v || 'Stock is required',
 				v => v >= 0  || "Stock should be above 0",
@@ -80,25 +79,27 @@ export default {
 		}
 	},
 	methods: {
-		updateProduct() {
+		clickSave(){
 			if (this.$refs.form.validate()){
-				this.$store.dispatch('updateProduct', {
-				id: this.product.id,
-				name: this.name,
-				price: parseFloat(this.price),
-				stock: parseInt(this.stock)
+				this.$store.dispatch('storeProduct', {
+					name: this.name,
+					price: parseFloat(this.price),
+					stock: parseInt(this.stock)
 				})
 				.then(() => {
-					this.$emit('productUpdated');
+					this.$emit('productCreated');
 					this.closePopup();
-				}).catch((error) => {
+				})
+				.catch((error) => {
 					this.errorMsg = Object.values(error.data.errors);
 				});
 			}
 		},
 		closePopup(){
+			this.errorMsg = null;
+			this.$refs.form.resetValidation();
 			this.dialog = false;
-			[this.name, this.price, this.stock] = [this.product.name, this.product.price ,this.product.stock];
+			[this.name, this.price, this.stock] = ['', '', ''];
 		}
 	}
 }
