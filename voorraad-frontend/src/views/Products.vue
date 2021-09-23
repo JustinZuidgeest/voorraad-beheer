@@ -49,9 +49,13 @@
 
 <script>
 import AddProductPopup from '../components/AddProductPopup.vue';
+import EditProductPopup from '../components/EditProductPopup.vue'
 
   export default {
-  components: { AddProductPopup },
+  components: { 
+		AddProductPopup,
+		EditProductPopup
+		},
     name: 'Products',
 
 	data: () => ({
